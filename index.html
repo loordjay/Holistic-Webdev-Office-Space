@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovate Inc. - Intranet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .card-hover-effect {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover-effect:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .sticky-note {
+            transition: transform 0.2s ease;
+        }
+        .sticky-note:hover {
+            transform: rotate(2deg) scale(1.05);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Background Gradient -->
+    <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 -z-10"></div>
+
+    <!-- Main Container -->
+    <div class="flex flex-col lg:flex-row min-h-screen">
+
+        <!-- Sidebar / Navigation -->
+        <aside class="w-full lg:w-64 bg-white/70 backdrop-blur-lg border-r border-gray-200/50 p-6 flex-shrink-0">
+            <div class="flex items-center gap-3 mb-10">
+                <div class="bg-blue-600 p-2 rounded-lg">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800">Innovate Inc.</h1>
+            </div>
+            <nav class="space-y-2">
+                <a href="#" class="flex items-center gap-3 px-4 py-2 text-white bg-blue-600 rounded-lg font-semibold">
+                    <i data-lucide="layout-dashboard"></i> Home
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+                    <i data-lucide="users"></i> My Team
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+                    <i data-lucide="folder"></i> Documents
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+                    <i data-lucide="calendar"></i> Calendar
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+                    <i data-lucide="settings"></i> Settings
+                </a>
+            </nav>
+            
+            <!-- Who's Online Widget -->
+            <div class="mt-10">
+                <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Who's Online</h3>
+                <div id="online-users" class="space-y-3">
+                    <!-- JS will populate this -->
+                </div>
+            </div>
+            
+            <!-- Fun Easter Egg -->
+            <div id="mascot" class="mt-10 text-center cursor-pointer">
+                <span class="text-4xl">🤖</span>
+                <p class="text-xs text-gray-500">Psst! Click me!</p>
+            </div>
+
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+            
+            <!-- Header -->
+            <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+                <div>
+                    <h2 id="greeting" class="text-3xl font-bold text-gray-900">Good Morning, Alex!</h2>
+                    <p id="current-date-time" class="text-gray-500 mt-1">Loading date and time...</p>
+                </div>
+                <div class="flex items-center gap-4 mt-4 sm:mt-0">
+                    <div class="relative">
+                        <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 w-full sm:w-64 rounded-full bg-white/80 border border-gray-300/50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                    </div>
+                    <div class="relative">
+                        <button class="p-2 rounded-full bg-white/80 hover:bg-gray-100">
+                            <i data-lucide="bell" class="text-gray-600"></i>
+                            <span class="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white"></span>
+                        </button>
+                    </div>
+                    <img src="https://placehold.co/40x40/60A5FA/FFFFFF?text=A" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-white shadow-md">
+                </div>
+            </header>
+
+            <!-- Announcement Banner -->
+            <div id="announcement-banner" class="flex items-center justify-between bg-yellow-400/80 text-yellow-900 p-4 rounded-lg mb-8 fade-in">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="megaphone" class="w-6 h-6"></i>
+                    <p><strong>Company Town Hall:</strong> This Friday at 3 PM. Don't miss the important updates!</p>
+                </div>
+                <button id="dismiss-banner" class="p-1 rounded-full hover:bg-yellow-500/50">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- Personal Dashboard Widget -->
+                <div class="md:col-span-2 lg:col-span-4 grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="glassmorphism rounded-xl p-6 flex items-center gap-4 card-hover-effect">
+                        <i data-lucide="check-circle" class="w-10 h-10 text-green-500"></i>
+                        <div>
+                            <p class="text-gray-500">Tasks Completed</p>
+                            <p class="text-2xl font-bold">12 / 18</p>
+                        </div>
+                    </div>
+                    <div class="glassmorphism rounded-xl p-6 flex items-center gap-4 card-hover-effect">
+                        <i data-lucide="message-square" class="w-10 h-10 text-blue-500"></i>
+                        <div>
+                            <p class="text-gray-500">Unread Messages</p>
+                            <p class="text-2xl font-bold">5</p>
+                        </div>
+                    </div>
+                    <div class="glassmorphism rounded-xl p-6 flex items-center gap-4 card-hover-effect">
+                        <i data-lucide="cloudy" class="w-10 h-10 text-indigo-500"></i>
+                        <div>
+                            <p class="text-gray-500">Pune Weather</p>
+                            <p class="text-2xl font-bold">28°C, Cloudy</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Events -->
+                <div class="lg:col-span-2 glassmorphism rounded-xl p-6 card-hover-effect fade-in">
+                    <h3 class="text-xl font-bold mb-4">Upcoming Events</h3>
+                    <div id="events-container" class="space-y-4">
+                        <!-- JS will populate this -->
+                    </div>
+                </div>
+
+                <!-- Team Spotlight -->
+                <div class="lg:col-span-2 glassmorphism rounded-xl p-6 card-hover-effect fade-in">
+                    <h3 class="text-xl font-bold mb-4">Team Spotlight</h3>
+                    <div id="team-spotlight-carousel" class="relative overflow-hidden">
+                        <!-- Carousel slides will be injected here -->
+                    </div>
+                    <div class="flex justify-center gap-2 mt-4">
+                        <!-- Carousel dots will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Quick Access Resources -->
+                <div class="lg:col-span-2 glassmorphism rounded-xl p-6 card-hover-effect fade-in">
+                    <h3 class="text-xl font-bold mb-4">Quick Access</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        <a href="#" class="flex flex-col items-center justify-center text-center p-4 bg-blue-100/50 hover:bg-blue-200/70 rounded-lg transition-colors">
+                            <i data-lucide="book-open" class="w-8 h-8 text-blue-600 mb-2"></i>
+                            <span class="text-sm font-medium text-blue-800">HR Docs</span>
+                        </a>
+                        <a href="#" class="flex flex-col items-center justify-center text-center p-4 bg-green-100/50 hover:bg-green-200/70 rounded-lg transition-colors">
+                            <i data-lucide="life-buoy" class="w-8 h-8 text-green-600 mb-2"></i>
+                            <span class="text-sm font-medium text-green-800">IT Helpdesk</span>
+                        </a>
+                        <a href="#" class="flex flex-col items-center justify-center text-center p-4 bg-purple-100/50 hover:bg-purple-200/70 rounded-lg transition-colors">
+                            <i data-lucide="gift" class="w-8 h-8 text-purple-600 mb-2"></i>
+                            <span class="text-sm font-medium text-purple-800">Benefits</span>
+                        </a>
+                        <a href="#" class="flex flex-col items-center justify-center text-center p-4 bg-orange-100/50 hover:bg-orange-200/70 rounded-lg transition-colors">
+                            <i data-lucide="shield" class="w-8 h-8 text-orange-600 mb-2"></i>
+                            <span class="text-sm font-medium text-orange-800">Policies</span>
+                        </a>
+                         <a href="#" class="flex flex-col items-center justify-center text-center p-4 bg-red-100/50 hover:bg-red-200/70 rounded-lg transition-colors">
+                            <i data-lucide="plane" class="w-8 h-8 text-red-600 mb-2"></i>
+                            <span class="text-sm font-medium text-red-800">Travel</span>
+                        </a>
+                         <a href="#" class="flex flex-col items-center justify-center text-center p-4 bg-indigo-100/50 hover:bg-indigo-200/70 rounded-lg transition-colors">
+                            <i data-lucide="briefcase" class="w-8 h-8 text-indigo-600 mb-2"></i>
+                            <span class="text-sm font-medium text-indigo-800">Careers</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Company Poll -->
+                <div class="lg:col-span-2 glassmorphism rounded-xl p-6 card-hover-effect fade-in">
+                    <h3 class="text-xl font-bold mb-4">Poll of the Week</h3>
+                    <div id="poll-widget">
+                        <p class="mb-3 font-medium">What's the best way to brainstorm?</p>
+                        <div id="poll-options" class="space-y-2">
+                            <button data-option="whiteboard" class="w-full text-left p-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">Classic Whiteboard Session</button>
+                            <button data-option="virtual" class="w-full text-left p-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">Virtual Collaboration Tools</button>
+                            <button data-option="solo" class="w-full text-left p-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">Solo Deep Thinking First</button>
+                        </div>
+                        <div id="poll-results" class="hidden mt-4 space-y-2">
+                            <!-- Results will be shown here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Digital Bulletin Board -->
+                <div class="md:col-span-2 lg:col-span-4 glassmorphism rounded-xl p-6 card-hover-effect fade-in">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">Digital Bulletin Board</h3>
+                        <button id="add-note-btn" class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                            <i data-lucide="plus"></i> Add Note
+                        </button>
+                    </div>
+                    <div id="sticky-notes-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 min-h-[150px]">
+                        <!-- Sticky notes will be added here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for RSVP -->
+    <div id="rsvp-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg p-8 w-full max-w-md m-4 transform transition-all scale-95 opacity-0">
+            <div class="flex justify-between items-center">
+                <h3 id="modal-title" class="text-2xl font-bold">Event RSVP</h3>
+                <button id="close-modal-btn" class="p-1 rounded-full hover:bg-gray-200">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <p id="modal-event-details" class="mt-4 text-gray-600">Are you sure you want to RSVP for this event?</p>
+            <div class="mt-6 flex justify-end gap-3">
+                <button id="modal-cancel-btn" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">Cancel</button>
+                <button id="modal-confirm-btn" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Confirm RSVP</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Lucide icons
+            lucide.createIcons();
+
+            // --- Dynamic Greeting and Time ---
+            const greetingEl = document.getElementById('greeting');
+            const dateTimeEl = document.getElementById('current-date-time');
+            const userName = "Alex"; // This could be fetched from a server
+
+            function updateTime() {
+                const now = new Date();
+                const hour = now.getHours();
+                let greetingText;
+
+                if (hour < 12) {
+                    greetingText = `Good Morning, ${userName}!`;
+                } else if (hour < 18) {
+                    greetingText = `Good Afternoon, ${userName}!`;
+                } else {
+                    greetingText = `Good Evening, ${userName}!`;
+                }
+                greetingEl.textContent = greetingText;
+
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                dateTimeEl.textContent = now.toLocaleDateString('en-US', options);
+            }
+            updateTime();
+            setInterval(updateTime, 1000 * 60); // Update every minute
+
+            // --- Announcement Banner ---
+            const banner = document.getElementById('announcement-banner');
+            const dismissBtn = document.getElementById('dismiss-banner');
+            if (banner && dismissBtn) {
+                dismissBtn.addEventListener('click', () => {
+                    banner.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    banner.style.opacity = '0';
+                    banner.style.transform = 'scale(0.95)';
+                    setTimeout(() => banner.remove(), 500);
+                });
+            }
+
+            // --- Upcoming Events Data & Rendering ---
+            const events = [
+                { title: 'Project Phoenix Kick-off', time: '10:00 AM', type: 'meeting', color: 'blue' },
+                { title: 'Yoga & Mindfulness Session', time: '12:30 PM', type: 'wellness', color: 'green' },
+                { title: 'Q3 Design Review', time: '2:00 PM', type: 'review', color: 'purple' },
+            ];
+            const eventsContainer = document.getElementById('events-container');
+
+            events.forEach(event => {
+                const eventEl = document.createElement('div');
+                eventEl.className = 'flex items-center gap-4';
+                eventEl.innerHTML = `
+                    <div class="w-12 h-12 rounded-lg bg-${event.color}-100 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="${event.type === 'meeting' ? 'briefcase' : event.type === 'wellness' ? 'heart' : 'figma'}" class="w-6 h-6 text-${event.color}-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-semibold">${event.title}</p>
+                        <p class="text-sm text-gray-500">${event.time}</p>
+                    </div>
+                    <button data-event-title="${event.title}" class="rsvp-btn bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors">RSVP</button>
+                `;
+                eventsContainer.appendChild(eventEl);
+            });
+            lucide.createIcons(); // Re-run for dynamically added icons
+
+            // --- RSVP Modal Logic ---
+            const modal = document.getElementById('rsvp-modal');
+            const modalContent = modal.querySelector('.transform');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const modalCancelBtn = document.getElementById('modal-cancel-btn');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDetails = document.getElementById('modal-event-details');
+
+            function openModal(title) {
+                modalTitle.textContent = `RSVP for ${title}`;
+                modalDetails.textContent = `You'll be added to the guest list for "${title}".`;
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modalContent.classList.remove('scale-95', 'opacity-0');
+                }, 10);
+            }
+
+            function closeModal() {
+                modalContent.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                   modal.classList.add('hidden');
+                }, 300);
+            }
+
+            document.querySelectorAll('.rsvp-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    openModal(e.currentTarget.dataset.eventTitle);
+                });
+            });
+
+            closeModalBtn.addEventListener('click', closeModal);
+            modalCancelBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // --- Team Spotlight Carousel ---
+            const spotlightMembers = [
+                { name: 'Priya Sharma', role: 'Lead Designer', achievement: 'Launched the new branding guide.', avatar: 'https://placehold.co/80x80/fb923c/FFFFFF?text=P' },
+                { name: 'Rohan Mehta', role: 'Backend Engineer', achievement: 'Optimized database queries by 30%.', avatar: 'https://placehold.co/80x80/34d399/FFFFFF?text=R' },
+                { name: 'Anjali Rao', role: 'Product Manager', achievement: 'Celebrates 3 years at Innovate Inc!', avatar: 'https://placehold.co/80x80/a78bfa/FFFFFF?text=A' }
+            ];
+            const carouselContainer = document.getElementById('team-spotlight-carousel');
+            const dotsContainer = carouselContainer.nextElementSibling;
+            let currentSlide = 0;
+
+            function renderCarousel() {
+                carouselContainer.innerHTML = '';
+                dotsContainer.innerHTML = '';
+                spotlightMembers.forEach((member, index) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'w-full text-center transition-opacity duration-500 ease-in-out';
+                    if (index !== currentSlide) {
+                        slide.classList.add('hidden', 'opacity-0');
+                    } else {
+                         slide.classList.add('opacity-100');
+                    }
+                    slide.innerHTML = `
+                        <img src="${member.avatar}" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-white shadow-lg">
+                        <h4 class="font-bold text-lg">${member.name}</h4>
+                        <p class="text-sm text-gray-500">${member.role}</p>
+                        <p class="mt-2 text-sm italic">"${member.achievement}"</p>
+                        <button class="mt-3 bg-pink-500 text-white px-4 py-1 rounded-full text-sm hover:bg-pink-600 transition-colors">Send Kudos</button>
+                    `;
+                    carouselContainer.appendChild(slide);
+
+                    const dot = document.createElement('button');
+                    dot.className = 'w-2.5 h-2.5 rounded-full transition-colors';
+                    dot.dataset.index = index;
+                    dot.className += (index === currentSlide) ? ' bg-blue-600' : ' bg-gray-300';
+                    dotsContainer.appendChild(dot);
+                });
+
+                dotsContainer.querySelectorAll('button').forEach(dot => {
+                    dot.addEventListener('click', (e) => {
+                        currentSlide = parseInt(e.currentTarget.dataset.index);
+                        renderCarousel();
+                    });
+                });
+            }
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % spotlightMembers.length;
+                renderCarousel();
+            }
+
+            renderCarousel();
+            setInterval(nextSlide, 5000); // Auto-rotate every 5 seconds
+
+            // --- Poll Widget ---
+            const pollOptionsContainer = document.getElementById('poll-options');
+            const pollResultsContainer = document.getElementById('poll-results');
+            const pollButtons = pollOptionsContainer.querySelectorAll('button');
+            
+            const pollData = {
+                whiteboard: { label: 'Whiteboard Session', votes: 18, color: 'blue' },
+                virtual: { label: 'Virtual Tools', votes: 25, color: 'purple' },
+                solo: { label: 'Solo Thinking', votes: 12, color: 'green' }
+            };
+
+            function showPollResults() {
+                pollOptionsContainer.classList.add('hidden');
+                pollResultsContainer.innerHTML = '';
+                const totalVotes = Object.values(pollData).reduce((sum, item) => sum + item.votes, 0);
+
+                for (const key in pollData) {
+                    const item = pollData[key];
+                    const percentage = totalVotes > 0 ? Math.round((item.votes / totalVotes) * 100) : 0;
+                    const resultEl = document.createElement('div');
+                    resultEl.innerHTML = `
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-sm font-medium">${item.label}</span>
+                            <span class="text-sm font-bold text-gray-600">${percentage}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-${item.color}-500 h-2.5 rounded-full" style="width: ${percentage}%"></div>
+                        </div>
+                    `;
+                    pollResultsContainer.appendChild(resultEl);
+                }
+                pollResultsContainer.classList.remove('hidden');
+            }
+
+            pollButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const option = button.dataset.option;
+                    pollData[option].votes++;
+                    showPollResults();
+                });
+            });
+
+            // --- Digital Sticky Notes ---
+            const addNoteBtn = document.getElementById('add-note-btn');
+            const notesContainer = document.getElementById('sticky-notes-container');
+            const noteColors = ['yellow-200', 'green-200', 'pink-200', 'blue-200', 'purple-200'];
+
+            function createStickyNote() {
+                const noteEl = document.createElement('div');
+                const color = noteColors[Math.floor(Math.random() * noteColors.length)];
+                noteEl.className = `sticky-note p-4 rounded-lg shadow-md h-40 flex flex-col justify-between bg-${color} fade-in`;
+                
+                noteEl.innerHTML = `
+                    <textarea class="bg-transparent border-none focus:ring-0 w-full h-full resize-none text-sm text-gray-800 p-0" placeholder="Type something..."></textarea>
+                    <button class="delete-note-btn self-end text-gray-500 hover:text-red-500 p-1">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                `;
+                
+                notesContainer.prepend(noteEl);
+                lucide.createIcons(); // Re-run for new icon
+
+                noteEl.querySelector('.delete-note-btn').addEventListener('click', () => {
+                    noteEl.style.transition = 'opacity 0.3s, transform 0.3s';
+                    noteEl.style.opacity = '0';
+                    noteEl.style.transform = 'scale(0.8)';
+                    setTimeout(() => noteEl.remove(), 300);
+                });
+            }
+
+            addNoteBtn.addEventListener('click', createStickyNote);
+            // Add a default note to start
+            createStickyNote();
+
+
+            // --- Who's Online Widget ---
+            const onlineUsers = [
+                { name: 'Sarah J.', avatar: 'https://placehold.co/32x32/f472b6/FFFFFF?text=S' },
+                { name: 'Mike L.', avatar: 'https://placehold.co/32x32/60a5fa/FFFFFF?text=M' },
+                { name: 'Chen W.', avatar: 'https://placehold.co/32x32/a78bfa/FFFFFF?text=C' },
+                { name: 'Emily R.', avatar: 'https://placehold.co/32x32/34d399/FFFFFF?text=E' },
+            ];
+            const onlineUsersContainer = document.getElementById('online-users');
+            onlineUsers.forEach(user => {
+                const userEl = document.createElement('div');
+                userEl.className = 'flex items-center gap-3';
+                userEl.innerHTML = `
+                    <div class="relative">
+                        <img src="${user.avatar}" alt="${user.name}" class="w-8 h-8 rounded-full">
+                        <span class="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-400 ring-2 ring-white"></span>
+                    </div>
+                    <span class="font-medium text-sm text-gray-700">${user.name}</span>
+                `;
+                onlineUsersContainer.appendChild(userEl);
+            });
+
+            // --- Mascot Easter Egg ---
+            const mascot = document.getElementById('mascot');
+            const mascotMessages = [
+                "Have a productive day!",
+                "Stay curious!",
+                "Remember to take a break!",
+                "You're doing great!",
+                "Innovate and inspire!"
+            ];
+            mascot.addEventListener('click', () => {
+                const message = mascotMessages[Math.floor(Math.random() * mascotMessages.length)];
+                const messageBox = document.createElement('div');
+                messageBox.className = 'absolute bottom-20 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-sm px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap fade-in';
+                messageBox.textContent = message;
+                document.body.appendChild(messageBox);
+                setTimeout(() => {
+                    messageBox.style.transition = 'opacity 0.5s';
+                    messageBox.style.opacity = '0';
+                    setTimeout(() => messageBox.remove(), 500);
+                }, 2500);
+            });
+        });
+    </script>
+</body>
+</html>
